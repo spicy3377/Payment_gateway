@@ -1,0 +1,59 @@
+
+# error pages
+
+ErrorDocument 404 /error/404.php
+ErrorDocument 504 /error/504.php
+
+Options -Indexes
+
+Options -MultiViews
+
+RewriteEngine on
+
+
+
+# remove .php 
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^([^.]+)$ $1.php [NC,L]
+
+# rewrite index page
+
+
+RewriteRule ^normal_endpoints/create normal_endpoints/create_customer.php [NC,L]
+RewriteRule ^normal_endpoints/fetch_all normal_endpoints/fetch_customers.php [NC,L]
+RewriteRule ^normal_endpoints/select_id normal_endpoints/select_id_customer.php [NC,L]
+   
+
+# rewrite all db endpoints
+
+RewriteRule ^all_db_endpoints/customers/create all_db_endpoints/customers/create.php [NC,L]
+RewriteRule ^all_db_endpoints/customers/read all_db_endpoints/customers/read.php [NC,L]
+RewriteRule ^com/cooments    com/comments.php [NC,L]
+
+
+
+# site.com/zap_out.php
+
+RewriteRule ^zaps/([a-zA-Z0-9_]+)$ zaps.php?zaps=$1 [NC,L]
+
+
+RewriteRule ^([^.]+)$ $1.php [NC,L]
+
+# executes repeatedly as long as there are more than 1 spaces in URI
+RewriteRule "^(\S*)\s+(\S* .*)$" $1+$2 [N,NE]
+
+# executes when there is exactly 1 space in URI
+RewriteRule "^(\S*)\s(\S*)$" /$1+$2 [L,R=302,NE]
+
+
+
+
+
+
+
+# block access to htaccess file
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
